@@ -43,6 +43,58 @@ public class ManagementSystem {
         }
     }
 
+    private static void updateEmployee(){
+
+        System.out.print("Enter Employee Id: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        for(Employee e : employeeLists){
+            if(e.getId() == id){
+                System.out.println("Updated Employee Details");
+                System.out.print("Enter New Full Name: ");
+                String newName = scanner.nextLine();
+
+                System.out.print("Enter New Department: ");
+                String newDepartment = scanner.nextLine();
+
+                System.out.print("Enter New Address: ");
+                String newAddress = scanner.nextLine();
+
+                System.out.print("Enter New Salary: ");
+                double newSalary = scanner.nextDouble();
+
+                e.setFullName(newName);
+                e.setDepartment(newDepartment);
+                e.setAddress(newAddress);
+                e.setSalary(newSalary);
+
+                System.out.println("Employee ID: " + id + " Updated Successfully");
+
+            }else{
+                System.out.println("Employee with Id: " + id + " not present");
+            }
+        }
+    }
+
+    private static void deleteEmployee(){
+        System.out.println("Delete Employee");
+        System.out.print("Enter Employee ID: ");
+        int id = scanner.nextInt();
+
+        for(Employee e: employeeLists){
+            if(e.getId() == id){
+                employeeLists.remove(e);
+                System.out.println("Employee ID: " + id + " with Deleted Successfully");
+            }else{
+                System.out.println("Employee with Id: " + id + " not present");
+            }
+        }
+
+    }
+
+
+
 
 
     public static void main(String[] args){
@@ -55,6 +107,8 @@ public class ManagementSystem {
             System.out.println("\n--- Employee Management System ---");
             System.out.println("1. Add Employee");
             System.out.println("2. Show All Employee");
+            System.out.println("3. Update Employee");
+            System.out.println("4. Delete Employee");
             System.out.println("5. Close");
 
             System.out.print("Enter Here: ");
@@ -67,6 +121,12 @@ public class ManagementSystem {
                     break;
                 case 2:
                     showAllEmployee();
+                    break;
+                case 3:
+                    updateEmployee();
+                    break;
+                case 4:
+                    deleteEmployee();
                     break;
                 case 5:
                     System.out.println("close");
