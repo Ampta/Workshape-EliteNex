@@ -1,0 +1,58 @@
+CREATE DATABASE IF NOT EXISTS bank_db;
+USE bank_db;
+
+-- Clean up existing tables
+DROP TABLE IF EXISTS transactions;
+DROP TABLE IF EXISTS accounts;
+DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS branches;
+
+-- 1. BRANCHES TABLE
+CREATE TABLE branches (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    ifsc_code VARCHAR(20) NOT NULL UNIQUE,
+    address VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. CUSTOMERS TABLE
+CREATE TABLE customers (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(120) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. ACCOUNTS TABLE
+CREATE TABLE accounts (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    customer_id BIGINT NOT NULL,
+    branch_id BIGINT NOT NULL,
+    account_number VARCHAR(20) NOT NULL UNIQUE,
+    account_type ENUM('SAVINGS', 'CHECKING') NOT NULL DEFAULT 'SAVINGS',
+    balance DECIMAL(15, 2) NOT NULL DEFAULT 0.00,
+    status ENUM('ACTIVE', 'FROZEN', 'CLOSED') NOT NULL DEFAULT 'ACTIVE',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    -- Relationships
+    CONSTRAINT fk_accounts_customer FOREIGN KEY (customer_id) REFERENCES customers(id),
+    CONSTRAINT fk_accounts_branch FOREIGN KEY (branch_id) REFERENCES branches(id)
+);
+
+-- 4. TRANSACTIONS TABLE
+CREATE TABLE transactions (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    from_account_id BIGINT NOT NULL,
+    to_account_id BIGINT DEFAULT NULL, -- NULL for Deposit/Withdraw
+    amount DECIMAL(15, 2) NOT NULL,
+    balance_after DECIMAL(15, 2) NOT NULL,
+    type ENUM('DEPOSIT', 'WITHDRAW', 'TRANSFER') NOT NULL,
+    status ENUM('SUCCESS', 'FAILED', 'PENDING') NOT NULL DEFAULT 'SUCCESS',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    -- Relationships
+    CONSTRAINT fk_tx_from_account FOREIGN KEY (from_account_id) REFERENCES accounts(id),
+    CONSTRAINT fk_tx_to_account FOREIGN KEY (to_account_id) REFERENCES accounts(id)
+);
