@@ -1,4 +1,4 @@
-package July.exmple2;
+package July.jul21.exmple2;
 
 public class ThreadFirst extends Thread{
     public void run (){

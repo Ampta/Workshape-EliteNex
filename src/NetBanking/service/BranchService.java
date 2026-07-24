@@ -10,7 +10,7 @@ import java.util.List;
 public class BranchService {
     private BranchDao branchDao = new BranchDao();
 
-    public void printAllBranch(Customer customer) throws SQLException {
+    public void printAllBranch() throws SQLException {
         List<Branch> branches = branchDao.findAll();
         int size = branches.size();
 

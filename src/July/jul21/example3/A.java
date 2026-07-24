@@ -1,6 +1,4 @@
-package July.example3;
-
-import NetBanking.model.Customer;
+package July.jul21.example3;
 
 public class A {
     boolean flag = true;

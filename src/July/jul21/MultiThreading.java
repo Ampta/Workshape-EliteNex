@@ -1,4 +1,4 @@
-package July;
+package July.jul21;
 
 public class MultiThreading {
     public static void main(String[] args) throws InterruptedException {

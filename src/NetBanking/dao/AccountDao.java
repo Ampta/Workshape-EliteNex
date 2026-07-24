@@ -2,6 +2,7 @@ package NetBanking.dao;
 
 import NetBanking.config.DbConnect;
 import NetBanking.model.Account;
+import NetBanking.model.Transaction;
 import NetBanking.util.GenerateId;
 
 import java.sql.*;
@@ -23,7 +24,7 @@ public class AccountDao {
 
             statement.executeUpdate();
 
-            Account account = findById(accountNumber);
+            Account account = findByAccountNumber(accountNumber);
             if (account == null) {
                 throw new SQLException("Failed to find Customer");
             }
@@ -31,6 +32,20 @@ public class AccountDao {
         }
     }
 
+    public Account deposit(Account account, double amount){
+
+        return null;
+    }
+
+    public Account withdraw(Account account, double amount){
+
+        return null;
+    }
+
+    public Account transfer(Account fromAccount, Account toAccount, double amount){
+
+        return null;
+    }
 
     public List<Account> findAll() throws SQLException{
         String query = "select * from customers where role = 'USER' order by created_at desc";
@@ -46,18 +61,16 @@ public class AccountDao {
         return accounts;
     }
 
-    public Account findById(String id) throws SQLException{
-        String query = "select * from accounts where id = ?";
+    public Account findByAccountNumber(String accountNumber) throws SQLException{
+        String query = "select * from accounts where account_number = ?";
         try(Connection con = DbConnect.getConn();
             PreparedStatement statement = con.prepareStatement(query)){
-            statement.setString(1, id);
+            statement.setString(1, accountNumber);
             try(ResultSet result = statement.executeQuery()){
                 return result.next() ? map(result) : null;
             }
         }
     }
-
-
 
     private Account map(ResultSet result) throws SQLException {
         Timestamp createdAt = result.getTimestamp("created_At");

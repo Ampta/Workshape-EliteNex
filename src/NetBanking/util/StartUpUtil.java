@@ -1,6 +1,5 @@
 package NetBanking.util;
 
-import July.example3.A;
 import NetBanking.dao.CustomerDao;
 import NetBanking.model.Account;
 import NetBanking.model.Branch;
@@ -59,15 +58,16 @@ public class StartUpUtil {
 
         // select branch
         System.out.println("Select Branch from below Options");
-        branchService.printAllBranch(customer);
+        branchService.printAllBranch();
         Branch branch = branchService.selectBranch(
                 customer,
                 readInt("Select: "));
 
         System.out.println(branch.getId());
+
         // create account
-        Account account = accountService.createNewAccount(customer.getId(), branch.getId());
-        System.out.println(" Welcome " + customer.getName()+ ". Your Account Number is: " + account.getAccountNumber());
+        Account account = accountService.createNewAccount(customer, branch);
+        System.out.println(" Welcome " + customer.getName().toUpperCase() + ". Your Account Number is: " + account.getAccountNumber());
     }
 
     private void loginCustomer() throws SQLException{
@@ -81,7 +81,7 @@ public class StartUpUtil {
             return;
         }
 
-        branchService.printAllBranch(customer);
+        branchService.printAllBranch();
 
         if(customer.getRole().equals(Role.ADMIN)){
             adminMenu(customer);

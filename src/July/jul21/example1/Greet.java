@@ -1,4 +1,4 @@
-package July.example1;
+package July.jul21.example1;
 
 public class Greet extends Thread{
     Driver driver;
